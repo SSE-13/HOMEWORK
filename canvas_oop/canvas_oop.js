@@ -3,15 +3,18 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/**
+ * 基类，负责处理x,y,rotation 等属性
+ */
 var DisplayObject = (function () {
     function DisplayObject() {
         this.x = 0;
         this.y = 0;
-        this.rotate = 0;
+        this.rotation = 0;
     }
     DisplayObject.prototype.draw = function (context) {
         context.save();
-        context.rotate(this.rotate);
+        context.rotate(this.rotation);
         context.translate(this.x, this.y);
         this.render(context);
         context.restore();
@@ -20,23 +23,24 @@ var DisplayObject = (function () {
     };
     return DisplayObject;
 }());
-cla;
-ss;
-Bitmap;
-DisplayObject;
-{
-    render(context, CanvasRenderingContext2D);
-    {
-        var image = new Image();
-        image.src = "wander-icon.jpg";
-        image.onload = function () {
-            // context.save();
-            // context.translate(0, 100);
-            context.drawImage(image, 0, 0);
-            // context.restore();
-        };
+var Bitmap = (function (_super) {
+    __extends(Bitmap, _super);
+    function Bitmap() {
+        _super.apply(this, arguments);
     }
-}
+    Bitmap.prototype.render = function (context) {
+        var image = imagePool[this.source];
+        if (image) {
+            context.drawImage(image, 0, 0);
+        }
+        else {
+            context.font = "20px Arial";
+            context.fillStyle = '#000000';
+            context.fillText('错误的URL', 0, 20);
+        }
+    };
+    return Bitmap;
+}(DisplayObject));
 var Rect = (function (_super) {
     __extends(Rect, _super);
     function Rect() {
@@ -58,7 +62,6 @@ var TextField = (function (_super) {
     }
     TextField.prototype.render = function (context) {
         context.font = "20px Arial";
-        // context.rotate(Math.PI / 4);
         context.fillStyle = '#000000';
         context.fillText('HelloWorld', 0, 20);
     };
@@ -69,6 +72,26 @@ function drawQueue(queue) {
         var displayObject = renderQueue[i];
         displayObject.draw(context);
     }
+}
+var imagePool = {};
+function loadResource(imageList, callback) {
+    var count = 0;
+    imageList.forEach(function (imageUrl) {
+        var image = new Image();
+        image.src = imageUrl;
+        image.onload = onLoadComplete;
+        image.onerror = onLoadError;
+        function onLoadComplete() {
+            imagePool[imageUrl] = image;
+            count++;
+            if (count == imageList.length) {
+                callback();
+            }
+        }
+        function onLoadError() {
+            alert('资源加载失败:' + imageUrl);
+        }
+    });
 }
 var canvas = document.getElementById("game");
 var context = canvas.getContext("2d");
@@ -81,9 +104,17 @@ rect2.width = 300;
 rect2.height = 50;
 rect2.x = 200;
 rect2.y = 200;
-rect2.rotate = Math.PI / 8;
+rect2.rotation = Math.PI / 8;
 rect2.color = '#00FFFF';
 var text = new TextField();
-text.x = 50;
-var renderQueue = [rect, rect2, text];
-drawQueue(renderQueue);
+text.x = 10;
+var bitmap = new Bitmap();
+bitmap.source = 'wander-icon.jpg2';
+//渲染队列
+var renderQueue = [rect, rect2, text, bitmap];
+//资源加载列表
+var imageList = ['wander-icon.jpg'];
+//先加载资源，加载成功之后执行渲染队列
+loadResource(imageList, function () {
+    drawQueue(renderQueue);
+});
