@@ -6,10 +6,12 @@
 #### 软件下载
 * 下载并安装 Node.js
 * 下载 GitHub for Desktop 或者 SourceTree 客户端
+* 下载并安装 Visual Studio Code 客户端
 
 #### 同步代码
-* 将 GitHub 中的代码同步到本地
+* 将 GitHub 中的项目```SSE_${学号})```同步到本地
 ![将 GitHub 中的代码同步到本地](images/git_1.png)
+* 使用 VisualStudioCode 打开本地代码 （ File - Open )
 * 修改 README.md 文件，并提交回 GitHub
 ![修改 README.md 文件，并提交回 GitHub](images/git_2.png)
 
@@ -18,8 +20,8 @@
 
 #### 准备作业
 * 使用 GitHub 的 [DownloadZip](https://github.com/SSE-13/SSE_06080215/archive/master.zip) 功能下载本项目。
-* 解压本项目，将 ``` canvas_oop ``` , ```package.json```和```start.js```解压到作业的根目录下。
-* 打开命令行，进入作业文件夹，执行 ``` npm install ```
+* 解压本项目，将 ``` canvas_oop ``` , ```package.json```和```start.js```解压到作业项目的根目录下。
+* 打开命令行，进入作业项目根目录，执行 ``` npm install ```
 * 执行 ``` node start.js canvas_oop ```
 * 打开 Chrome浏览器，输入 ```localhost:3000```，如果能看到内容，表示准备工作完成
 
