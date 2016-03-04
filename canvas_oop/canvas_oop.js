@@ -20,12 +20,13 @@ var DisplayObject = (function () {
     };
     return DisplayObject;
 }());
-var Bitmap = (function (_super) {
-    __extends(Bitmap, _super);
-    function Bitmap() {
-        _super.apply(this, arguments);
-    }
-    Bitmap.prototype.render = function (context) {
+cla;
+ss;
+Bitmap;
+DisplayObject;
+{
+    render(context, CanvasRenderingContext2D);
+    {
         var image = new Image();
         image.src = "wander-icon.jpg";
         image.onload = function () {
@@ -34,9 +35,8 @@ var Bitmap = (function (_super) {
             context.drawImage(image, 0, 0);
             // context.restore();
         };
-    };
-    return Bitmap;
-}(DisplayObject));
+    }
+}
 var Rect = (function (_super) {
     __extends(Rect, _super);
     function Rect() {
@@ -84,6 +84,6 @@ rect2.y = 200;
 rect2.rotate = Math.PI / 8;
 rect2.color = '#00FFFF';
 var text = new TextField();
-text.x = 100;
+text.x = 50;
 var renderQueue = [rect, rect2, text];
 drawQueue(renderQueue);

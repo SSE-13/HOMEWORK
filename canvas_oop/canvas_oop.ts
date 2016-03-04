@@ -95,7 +95,7 @@ rect2.rotate = Math.PI / 8;
 rect2.color = '#00FFFF'
 
 var text = new TextField();
-text.x = 50;
+text.x = 10;
 
 var renderQueue = [ rect, rect2, text];
 drawQueue(renderQueue);

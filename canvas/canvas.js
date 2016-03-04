@@ -1,12 +1,12 @@
 var canvas = document.getElementById("game");
 var context = canvas.getContext("2d");
-drawRect();
+drawRect(100, 100);
 drawText();
 drawImage();
-function drawRect() {
+function drawRect(width, height) {
     context.save();
     context.fillStyle = '#FF0000';
-    context.fillRect(0, 0, 100, 100);
+    context.fillRect(0, 0, width, height);
     context.restore();
 }
 function drawText() {
