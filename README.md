@@ -20,7 +20,7 @@
 
 #### 准备作业
 * 使用 GitHub 的 [DownloadZip](https://github.com/SSE-13/SSE_06080215/archive/master.zip) 功能下载本项目。
-* 解压本项目，将 ``` canvas_oop ``` , ```package.json```和```start.js```解压到作业项目的根目录下。
+* 解压本项目，将 ``` canvas_oop ``` , ```package.json```,```start.js```和```.gitignore```解压到作业项目的根目录下。
 * 打开命令行，进入作业项目根目录，执行 ``` npm install ```
 * 执行 ``` node start.js canvas_oop ```
 * 打开 Chrome浏览器，输入 ```localhost:3000```，如果能看到内容，表示准备工作完成
