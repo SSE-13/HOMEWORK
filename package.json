@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.13.4",
+    "iconv-lite": "^0.4.13",
     "typescript": "^1.8.7"
   },
   "devDependencies": {},
