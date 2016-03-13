@@ -1,6 +1,6 @@
 # 如何完成作业
 
-### 准备工作
+## 准备工作
 
 
 #### 软件下载
@@ -17,6 +17,11 @@
 
 > 在 Github for Desktop 中，先进行 commit ，再进行 sync
 > 在 SourceTree 中，先进行 commit ，再进行 push
+
+
+## 作业内容
+
+### 作业二
 
 #### 准备作业
 * 使用 GitHub 的 [DownloadZip](https://github.com/SSE-13/SSE_06080215/archive/master.zip) 功能下载本项目。
@@ -46,3 +51,19 @@ project-path
     |-- start.js // 启动服务器脚本
     |-- README.md // 作业1的Markdown文件（自我介绍）
 ```
+
+
+### 作业三
+
+#### 准备作业
+* 使用 GitHub 的 [DownloadZip](https://github.com/SSE-13/SSE_06080215/archive/master.zip) 功能下载本项目。
+* 解压本项目，将 ``` animation ``` 解压到作业项目的根目录下。
+* 打开命令行，进入作业项目根目录
+* 执行 ``` node start.js animation ```，启动一个HTTP服务器
+* 打开 Chrome浏览器，输入 ```localhost:3000```，如果能看到内容，表示准备工作完成
+* 在整个开发过程中，请不要关闭命令行，以保证服务器一直处于开启状态
+
+#### 作业内容
+* 修改 ``` animation ``` 文件夹中的 ```animation.ts```文件，为砖块动画添加左侧、右侧的反弹动画逻辑。
+* 修改 ``` body ``` 的初始物理量，保证 vx , vy 在 0 至 100 的范围内，行为正常不会越界。
+

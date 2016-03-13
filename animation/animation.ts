@@ -64,10 +64,7 @@ class Body {
         this.y += duringTime * this.vy;
 
         //反弹
-        if (this.y + this.height > BOUNDS_BOTTOM
-            //判断 vy > 0 是为了保证只有物体当前在向下掉落时才会触发反弹，防止数值越界。
-            //如果初始y方向速度比较大（如 body.vy = 50），此时如果没有这个判断，会因为越界导致无法反弹。
-            && this.vy > 0) {
+        if (this.y + this.height > BOUNDS_BOTTOM) {
             this.vy = -BOUNCE * this.vy;
         }
 
@@ -95,8 +92,8 @@ rect.color = '#FF0000';
 var body = new Body(rect);
 body.width = rect.width;
 body.height = rect.height;
-body.vx = 5;
-body.vy = 0;
+body.vx = 5;//需要保证 vx 在 0-50的范围内行为正常
+body.vy = 0;//需要保证 vy 在 0-50的范围内行为正常
 
 
 var renderCore = new RenderCore();
