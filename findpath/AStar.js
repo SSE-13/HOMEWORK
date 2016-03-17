@@ -17,7 +17,7 @@ var astar;
                 return "口";
             }
             else {
-                return "  ";
+                return "国";
             }
         };
         return Node;
@@ -75,8 +75,33 @@ var astar;
             enumerable: true,
             configurable: true
         });
+        Grid.prototype.getNeighbors = function (node) {
+            var result = [];
+            var startX = Math.max(0, node.x - 1);
+            var endX = Math.min(grid.numCols - 1, node.x + 1);
+            var startY = Math.max(0, node.y - 1);
+            var endY = Math.min(grid.numRows - 1, node.y + 1);
+            for (var i = startX; i <= endX; i++) {
+                for (var j = startY; j <= endY; j++) {
+                    result.push(this.getNode(i, j));
+                }
+            }
+            return result;
+        };
         Grid.prototype.toString = function () {
-            return this._nodes.map(function (arr) { return arr.map(function (node) { return node.toString(); }).join(""); }).join("\n");
+            var result = "";
+            for (var y = 0; y < this._numRows; y++) {
+                for (var x = 0; x < this._numCols; x++) {
+                    result += this._nodes[x][y].toString();
+                }
+                result += "\n";
+            }
+            return result;
+            // return this._nodes.map(
+            //     (arr) => arr.map(
+            //         (node) => node.toString()
+            //     ).join("")
+            // ).join("\n")
         };
         return Grid;
     }());
@@ -136,38 +161,37 @@ var astar;
                 var endX = Math.min(grid.numCols - 1, node.x + 1);
                 var startY = Math.max(0, node.y - 1);
                 var endY = Math.min(grid.numRows - 1, node.y + 1);
-                for (var i = startX; i <= endX; i++) {
-                    for (var j = startY; j <= endY; j++) {
-                        var test = grid.getNode(i, j);
-                        if (test == node ||
-                            !test.walkable ||
-                            !grid.getNode(node.x, test.y).walkable ||
-                            !grid.getNode(test.x, node.y).walkable) {
-                            continue;
-                        }
-                        var cost = STRAIGHT_COST;
-                        if (!((node.x == test.x) || (node.y == test.y))) {
-                            cost = DIAG_COST;
-                        }
-                        var g = node.g + cost * test.costMultiplier;
-                        var h = this._heuristic(test);
-                        test.visited = true;
-                        var f = g + h;
-                        if (this.isOpen(test) || this.isClosed(test)) {
-                            if (test.f > f) {
-                                test.f = f;
-                                test.g = g;
-                                test.h = h;
-                                test.parent = node;
-                            }
-                        }
-                        else {
+                var neighbors = grid.getNeighbors(node);
+                for (var i = 0; i < neighbors.length; i++) {
+                    var test = neighbors[i];
+                    if (test == node ||
+                        !test.walkable ||
+                        !grid.getNode(node.x, test.y).walkable ||
+                        !grid.getNode(test.x, node.y).walkable) {
+                        continue;
+                    }
+                    var cost = STRAIGHT_COST;
+                    if (!((node.x == test.x) || (node.y == test.y))) {
+                        cost = DIAG_COST;
+                    }
+                    var g = node.g + cost * test.costMultiplier;
+                    var h = this._heuristic(test);
+                    test.visited = true;
+                    var f = g + h;
+                    if (this.isOpen(test) || this.isClosed(test)) {
+                        if (test.f > f) {
                             test.f = f;
                             test.g = g;
                             test.h = h;
                             test.parent = node;
-                            openList.push(test);
                         }
+                    }
+                    else {
+                        test.f = f;
+                        test.g = g;
+                        test.h = h;
+                        test.parent = node;
+                        openList.push(test);
                     }
                 }
                 closedList.push(node);
@@ -195,10 +219,10 @@ var astar;
     }());
     astar.AStar = AStar;
 })(astar || (astar = {}));
-var grid = new astar.Grid(60, 80);
-grid.setStartNode(0, 0);
+var grid = new astar.Grid(50, 50);
+grid.setStartNode(1, 0);
 // grid.setWalkable(1, 1, false);
-grid.setEndNode(15, 45);
+grid.setEndNode(45, 15);
 var findpath = new astar.AStar();
 var result = findpath.findPath(grid);
 console.log(grid.toString());

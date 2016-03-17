@@ -12,7 +12,7 @@ module astar {
         parent: Node;
         costMultiplier: number = 1.0;
         visited: Boolean = false;
-        inPath:Boolean = false;
+        inPath: Boolean = false;
 
         constructor(x: number, y: number) {
             this.x = x;
@@ -23,11 +23,11 @@ module astar {
             if (this.inPath) {
                 return "田"
             }
-            else if (this.visited){
+            else if (this.visited) {
                 return "口";
             }
             else {
-                return "  ";
+                return "国";
             }
         }
     }
@@ -85,19 +85,44 @@ module astar {
             return this._numRows;
         }
 
+        public getNeighbors(node: Node): Array<Node> {
+            var result = [];
+            var startX: number = Math.max(0, node.x - 1);
+            var endX: number = Math.min(grid.numCols - 1, node.x + 1);
+            var startY: number = Math.max(0, node.y - 1);
+            var endY: number = Math.min(grid.numRows - 1, node.y + 1);
+            for (var i: number = startX; i <= endX; i++) {
+                for (var j: number = startY; j <= endY; j++) {
+                    result.push(this.getNode(i, j));
+                }
+            }
+            return result;
+        }
+
         public toString() {
-            return this._nodes.map(
-                (arr) => arr.map(
-                    (node) => node.toString()
-                ).join("")
-            ).join("\n")
+
+            var result = "";
+
+            for (var y = 0; y < this._numRows; y++) {
+                for (var x = 0; x < this._numCols; x++) {
+                    result += this._nodes[x][y].toString();
+                }
+                result += "\n"
+            }
+
+            return result;
+            // return this._nodes.map(
+            //     (arr) => arr.map(
+            //         (node) => node.toString()
+            //     ).join("")
+            // ).join("\n")
         }
 
     }
-    
-    
+
+
     const STRAIGHT_COST = 1;
-    
+
     const DIAG_COST = Math.SQRT2;
 
     export class AStar {
@@ -123,15 +148,15 @@ module astar {
             var dy: number = node.y - _endNode.y;
             return Math.sqrt(dx * dx + dy * dy) * STRAIGHT_COST;
         }
-        
-        
-        diagonal(node:Node):number {
+
+
+        diagonal(node: Node): number {
             var _endNode = this._endNode;
-            var dx:number = Math.abs(node.x - _endNode.x); 
-            var dy:number = Math.abs(node.y - _endNode.y); 
-            var diag:number = Math.min(dx, dy);
-            var straight:number = dx + dy;
-            return DIAG_COST * diag + STRAIGHT_COST * (straight - 2 * diag); 
+            var dx: number = Math.abs(node.x - _endNode.x);
+            var dy: number = Math.abs(node.y - _endNode.y);
+            var diag: number = Math.min(dx, dy);
+            var straight: number = dx + dy;
+            return DIAG_COST * diag + STRAIGHT_COST * (straight - 2 * diag);
         }
 
         constructor() {
@@ -161,8 +186,8 @@ module astar {
         private isClosed(node: Node): Boolean {
             return this._closed.indexOf(node) >= 0;
         }
-        
-        
+
+
 
 
         public search(): Boolean {
@@ -171,53 +196,47 @@ module astar {
             var closedList = this._closed;
             var node: Node = this._startNode;
             while (node != this._endNode) {
-                var startX: number = Math.max(0, node.x - 1);
-                var endX: number = Math.min(grid.numCols - 1, node.x + 1);
-                var startY: number = Math.max(0, node.y - 1);
-                var endY: number = Math.min(grid.numRows - 1, node.y + 1);
-                for (var i: number = startX; i <= endX; i++) {
-                    for (var j: number = startY; j <= endY; j++) {
-                        var test: Node = grid.getNode(i, j);
-                        
-                        if (test == node ||
-                            !test.walkable ||
-                            !grid.getNode(node.x, test.y).walkable ||
-                            !grid.getNode(test.x, node.y).walkable) {
-                            continue;
-                        }
-                        var cost: number = STRAIGHT_COST;
-                        if (!((node.x == test.x) || (node.y == test.y))) {
-                            cost = DIAG_COST;
-                        }
-                        var g: number = node.g + cost * test.costMultiplier;
-                        var h: number = this._heuristic(test);
-                        test.visited = true;
-                        var f: number = g + h;
-                        if (this.isOpen(test) || this.isClosed(test)) {
-                            if (test.f > f) {
-                                test.f = f;
-                                test.g = g;
-                                test.h = h;
-                                test.parent = node;
-                            }
-                        }
-                        else {
+                var neighbors = grid.getNeighbors(node);
+                for (var i = 0; i < neighbors.length; i++) {
+                    var test: Node = neighbors[i];
+                    if (test == node ||
+                        !test.walkable ||
+                        !grid.getNode(node.x, test.y).walkable ||
+                        !grid.getNode(test.x, node.y).walkable) {
+                        continue;
+                    }
+                    var cost: number = STRAIGHT_COST;
+                    if (!((node.x == test.x) || (node.y == test.y))) {
+                        cost = DIAG_COST;
+                    }
+                    var g: number = node.g + cost * test.costMultiplier;
+                    var h: number = this._heuristic(test);
+                    test.visited = true;
+                    var f: number = g + h;
+                    if (this.isOpen(test) || this.isClosed(test)) {
+                        if (test.f > f) {
                             test.f = f;
                             test.g = g;
                             test.h = h;
                             test.parent = node;
-                            openList.push(test);
-                             
                         }
+                    }
+                    else {
+                        test.f = f;
+                        test.g = g;
+                        test.h = h;
+                        test.parent = node;
+                        openList.push(test);
+
                     }
                 }
                 closedList.push(node);
-               
+
                 if (openList.length == 0) {
                     console.log("no path found");
-                    return false
+                    return false;
                 }
-                openList.sort((a,b) => a.f - b.f);
+                openList.sort((a, b) => a.f - b.f);
                 node = openList.shift() as Node;
             }
             this.buildPath();
@@ -238,10 +257,10 @@ module astar {
     }
 }
 
-var grid = new astar.Grid(60, 80);
-grid.setStartNode(0, 0);
+var grid = new astar.Grid(50, 50);
+grid.setStartNode(1, 0);
 // grid.setWalkable(1, 1, false);
-grid.setEndNode(15, 45);
+grid.setEndNode(45, 15);
 var findpath = new astar.AStar();
 var result = findpath.findPath(grid);
 console.log(grid.toString());
