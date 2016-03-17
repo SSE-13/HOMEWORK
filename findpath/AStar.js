@@ -19,7 +19,6 @@ var astar;
             else {
                 return "  ";
             }
-            // return `[${this.x},${this.y},${this.visited}]`
         };
         return Node;
     }());
@@ -82,25 +81,25 @@ var astar;
         return Grid;
     }());
     astar.Grid = Grid;
+    var STRAIGHT_COST = 1;
+    var DIAG_COST = Math.SQRT2;
     var AStar = (function () {
         function AStar() {
-            this._straightCost = 1.0;
-            this._diagCost = Math.SQRT2;
             // this._heuristic = this.diagonal;
             this._heuristic = this.manhattan;
             // this._heuristic = this.euclidian;
         }
         AStar.prototype.manhattan = function (node) {
             var _endNode = this._endNode;
-            var cost = Math.abs(node.x - _endNode.x) * this._straightCost
-                + Math.abs(node.y + _endNode.y) * this._straightCost;
+            var cost = Math.abs(node.x - _endNode.x) * STRAIGHT_COST
+                + Math.abs(node.y + _endNode.y) * STRAIGHT_COST;
             return cost;
         };
         AStar.prototype.euclidian = function (node) {
             var _endNode = this._endNode;
             var dx = node.x - _endNode.x;
             var dy = node.y - _endNode.y;
-            return Math.sqrt(dx * dx + dy * dy) * this._straightCost;
+            return Math.sqrt(dx * dx + dy * dy) * STRAIGHT_COST;
         };
         AStar.prototype.diagonal = function (node) {
             var _endNode = this._endNode;
@@ -108,7 +107,7 @@ var astar;
             var dy = Math.abs(node.y - _endNode.y);
             var diag = Math.min(dx, dy);
             var straight = dx + dy;
-            return this._diagCost * diag + this._straightCost * (straight - 2 * diag);
+            return DIAG_COST * diag + STRAIGHT_COST * (straight - 2 * diag);
         };
         AStar.prototype.findPath = function (grid) {
             this._grid = grid;
@@ -146,9 +145,9 @@ var astar;
                             !grid.getNode(test.x, node.y).walkable) {
                             continue;
                         }
-                        var cost = this._straightCost;
+                        var cost = STRAIGHT_COST;
                         if (!((node.x == test.x) || (node.y == test.y))) {
-                            cost = this._diagCost;
+                            cost = DIAG_COST;
                         }
                         var g = node.g + cost * test.costMultiplier;
                         var h = this._heuristic(test);
@@ -171,19 +170,12 @@ var astar;
                         }
                     }
                 }
-                for (var o = 0; o < openList.length; o++) {
-                }
                 closedList.push(node);
                 if (openList.length == 0) {
-                    // trace("no path found");
+                    console.log("no path found");
                     return false;
                 }
-                // console.log ('before');
-                // openList.map((node)=>console.log(node.h));
                 openList.sort(function (a, b) { return a.f - b.f; });
-                // console.log ('after');
-                // openList.map((node)=>console.log(node.h));
-                // _open.sortOn("f", Array.NUMERIC);
                 node = openList.shift();
             }
             this.buildPath();
@@ -209,8 +201,4 @@ grid.setStartNode(0, 0);
 grid.setEndNode(15, 45);
 var findpath = new astar.AStar();
 var result = findpath.findPath(grid);
-if (result) {
-    findpath._path.map(function (node, index, arr) { console.log(node.toString()); });
-}
-console.log(result);
 console.log(grid.toString());

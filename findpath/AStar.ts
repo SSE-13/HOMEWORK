@@ -94,6 +94,11 @@ module astar {
         }
 
     }
+    
+    
+    const STRAIGHT_COST = 1;
+    
+    const DIAG_COST = Math.SQRT2;
 
     export class AStar {
 
@@ -104,13 +109,11 @@ module astar {
         private _startNode: Node;
         public _path: Array<Node>;
         private _heuristic: Function;
-        private _straightCost: number = 1.0;
-        private _diagCost: number = Math.SQRT2;
 
         manhattan(node: Node): number {
             var _endNode = this._endNode;
-            var cost = Math.abs(node.x - _endNode.x) * this._straightCost
-                + Math.abs(node.y + _endNode.y) * this._straightCost;
+            var cost = Math.abs(node.x - _endNode.x) * STRAIGHT_COST
+                + Math.abs(node.y + _endNode.y) * STRAIGHT_COST;
             return cost;
         }
 
@@ -118,7 +121,7 @@ module astar {
             var _endNode = this._endNode;
             var dx: number = node.x - _endNode.x;
             var dy: number = node.y - _endNode.y;
-            return Math.sqrt(dx * dx + dy * dy) * this._straightCost;
+            return Math.sqrt(dx * dx + dy * dy) * STRAIGHT_COST;
         }
         
         
@@ -128,7 +131,7 @@ module astar {
             var dy:number = Math.abs(node.y - _endNode.y); 
             var diag:number = Math.min(dx, dy);
             var straight:number = dx + dy;
-            return this._diagCost * diag + this._straightCost * (straight - 2 * diag); 
+            return DIAG_COST * diag + STRAIGHT_COST * (straight - 2 * diag); 
         }
 
         constructor() {
@@ -182,9 +185,9 @@ module astar {
                             !grid.getNode(test.x, node.y).walkable) {
                             continue;
                         }
-                        var cost: number = this._straightCost;
+                        var cost: number = STRAIGHT_COST;
                         if (!((node.x == test.x) || (node.y == test.y))) {
-                            cost = this._diagCost;
+                            cost = DIAG_COST;
                         }
                         var g: number = node.g + cost * test.costMultiplier;
                         var h: number = this._heuristic(test);
@@ -208,13 +211,10 @@ module astar {
                         }
                     }
                 }
-                for (var o: number = 0; o < openList.length; o++) {
-
-                }
                 closedList.push(node);
                
                 if (openList.length == 0) {
-                    // trace("no path found");
+                    console.log("no path found");
                     return false
                 }
                 openList.sort((a,b) => a.f - b.f);
@@ -244,8 +244,4 @@ grid.setStartNode(0, 0);
 grid.setEndNode(15, 45);
 var findpath = new astar.AStar();
 var result = findpath.findPath(grid);
-if (result) {
-    findpath._path.map((node: astar.Node, index, arr) => { console.log(node.toString()) });
-}
-console.log(result);
 console.log(grid.toString());
