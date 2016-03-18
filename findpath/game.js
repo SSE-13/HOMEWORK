@@ -62,6 +62,7 @@ var game;
             grid.setStartNode(0, 0);
             grid.setEndNode(10, 8);
             var findpath = new astar.AStar();
+            findpath.setHeurisitic(findpath.diagonal);
             var result = findpath.findPath(grid);
             var path = findpath._path;
             console.log(path);

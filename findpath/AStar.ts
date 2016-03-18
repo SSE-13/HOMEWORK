@@ -26,12 +26,6 @@ module astar {
             else{
                 return "口"
             }
-            // else if (this.visited) {
-            //     return "口";
-            // }
-            // else {
-            //     return "国";
-            // }
         }
     }
 
@@ -163,9 +157,11 @@ module astar {
         }
 
         constructor() {
-            this._heuristic = this.diagonal;
-            // this._heuristic = this.manhattan;
-            // this._heuristic = this.euclidian;
+           
+        }
+        
+        public setHeurisitic(heuristic){
+            this._heuristic = heuristic;
         }
 
 

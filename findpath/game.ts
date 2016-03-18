@@ -1,9 +1,9 @@
 module game {
 
 
-    const WIDTH = 50;
+    const GRID_PIXEL_WIDTH = 50;
 
-    const HEIGHT = 50;
+    const GRID_PIXEL_HEIGHT = 50;
 
     const NUM_ROWS = 12;
 
@@ -32,7 +32,7 @@ module game {
             context.beginPath();
             for (var i = 0; i < NUM_COLS; i++) {
                 for (var j = 0; j < NUM_ROWS; j++) {
-                    context.rect(i * WIDTH, j * HEIGHT, WIDTH, HEIGHT);
+                    context.rect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
                     context.fill();
                     context.stroke();
                 }
@@ -47,7 +47,7 @@ module game {
         render(context: CanvasRenderingContext2D) {
             context.beginPath()
             context.fillStyle = '#00FFFF';
-            context.arc(WIDTH / 2, HEIGHT / 2, Math.min(WIDTH, HEIGHT) / 2 - 5, 0, Math.PI * 2);
+            context.arc(GRID_PIXEL_WIDTH / 2, GRID_PIXEL_HEIGHT / 2, Math.min(GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT) / 2 - 5, 0, Math.PI * 2);
             context.fill();
             context.closePath();
         }
@@ -60,6 +60,7 @@ module game {
             grid.setStartNode(0, 0);
             grid.setEndNode(10, 8);
             var findpath = new astar.AStar();
+            findpath.setHeurisitic(findpath.diagonal);
             var result = findpath.findPath(grid);
             var path = findpath._path;
             console.log(path);

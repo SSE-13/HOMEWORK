@@ -16,12 +16,6 @@ var astar;
             else {
                 return "口";
             }
-            // else if (this.visited) {
-            //     return "口";
-            // }
-            // else {
-            //     return "国";
-            // }
         };
         return Node;
     }());
@@ -113,9 +107,6 @@ var astar;
     var DIAG_COST = Math.SQRT2;
     var AStar = (function () {
         function AStar() {
-            this._heuristic = this.diagonal;
-            // this._heuristic = this.manhattan;
-            // this._heuristic = this.euclidian;
         }
         AStar.prototype.manhattan = function (node) {
             var _endNode = this._endNode;
@@ -136,6 +127,9 @@ var astar;
             var diag = Math.min(dx, dy);
             var straight = dx + dy;
             return DIAG_COST * diag + STRAIGHT_COST * (straight - 2 * diag);
+        };
+        AStar.prototype.setHeurisitic = function (heuristic) {
+            this._heuristic = heuristic;
         };
         AStar.prototype.findPath = function (grid) {
             this._grid = grid;
