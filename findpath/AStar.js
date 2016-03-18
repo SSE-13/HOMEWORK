@@ -13,12 +13,15 @@ var astar;
             if (this.inPath) {
                 return "田";
             }
-            else if (this.visited) {
+            else {
                 return "口";
             }
-            else {
-                return "国";
-            }
+            // else if (this.visited) {
+            //     return "口";
+            // }
+            // else {
+            //     return "国";
+            // }
         };
         return Node;
     }());
@@ -78,9 +81,9 @@ var astar;
         Grid.prototype.getNeighbors = function (node) {
             var result = [];
             var startX = Math.max(0, node.x - 1);
-            var endX = Math.min(grid.numCols - 1, node.x + 1);
+            var endX = Math.min(this.numCols - 1, node.x + 1);
             var startY = Math.max(0, node.y - 1);
-            var endY = Math.min(grid.numRows - 1, node.y + 1);
+            var endY = Math.min(this.numRows - 1, node.y + 1);
             for (var i = startX; i <= endX; i++) {
                 for (var j = startY; j <= endY; j++) {
                     result.push(this.getNode(i, j));
@@ -110,8 +113,8 @@ var astar;
     var DIAG_COST = Math.SQRT2;
     var AStar = (function () {
         function AStar() {
-            // this._heuristic = this.diagonal;
-            this._heuristic = this.manhattan;
+            this._heuristic = this.diagonal;
+            // this._heuristic = this.manhattan;
             // this._heuristic = this.euclidian;
         }
         AStar.prototype.manhattan = function (node) {
@@ -157,10 +160,6 @@ var astar;
             var closedList = this._closed;
             var node = this._startNode;
             while (node != this._endNode) {
-                var startX = Math.max(0, node.x - 1);
-                var endX = Math.min(grid.numCols - 1, node.x + 1);
-                var startY = Math.max(0, node.y - 1);
-                var endY = Math.min(grid.numRows - 1, node.y + 1);
                 var neighbors = grid.getNeighbors(node);
                 for (var i = 0; i < neighbors.length; i++) {
                     var test = neighbors[i];
@@ -219,10 +218,3 @@ var astar;
     }());
     astar.AStar = AStar;
 })(astar || (astar = {}));
-var grid = new astar.Grid(50, 50);
-grid.setStartNode(1, 0);
-// grid.setWalkable(1, 1, false);
-grid.setEndNode(45, 15);
-var findpath = new astar.AStar();
-var result = findpath.findPath(grid);
-console.log(grid.toString());

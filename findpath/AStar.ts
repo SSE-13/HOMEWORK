@@ -23,12 +23,15 @@ module astar {
             if (this.inPath) {
                 return "田"
             }
-            else if (this.visited) {
-                return "口";
+            else{
+                return "口"
             }
-            else {
-                return "国";
-            }
+            // else if (this.visited) {
+            //     return "口";
+            // }
+            // else {
+            //     return "国";
+            // }
         }
     }
 
@@ -88,9 +91,9 @@ module astar {
         public getNeighbors(node: Node): Array<Node> {
             var result = [];
             var startX: number = Math.max(0, node.x - 1);
-            var endX: number = Math.min(grid.numCols - 1, node.x + 1);
+            var endX: number = Math.min(this.numCols - 1, node.x + 1);
             var startY: number = Math.max(0, node.y - 1);
-            var endY: number = Math.min(grid.numRows - 1, node.y + 1);
+            var endY: number = Math.min(this.numRows - 1, node.y + 1);
             for (var i: number = startX; i <= endX; i++) {
                 for (var j: number = startY; j <= endY; j++) {
                     result.push(this.getNode(i, j));
@@ -160,8 +163,8 @@ module astar {
         }
 
         constructor() {
-            // this._heuristic = this.diagonal;
-            this._heuristic = this.manhattan;
+            this._heuristic = this.diagonal;
+            // this._heuristic = this.manhattan;
             // this._heuristic = this.euclidian;
         }
 
@@ -257,10 +260,3 @@ module astar {
     }
 }
 
-var grid = new astar.Grid(50, 50);
-grid.setStartNode(1, 0);
-// grid.setWalkable(1, 1, false);
-grid.setEndNode(45, 15);
-var findpath = new astar.AStar();
-var result = findpath.findPath(grid);
-console.log(grid.toString());
