@@ -85,3 +85,30 @@ project-path
     * 将地图的不可走区域设置为黑色
     * 根据 astar 的寻路结果，编写人物行走动画，让人物逐个走过网格，到达终点
 * 加分题：将人物行走动画从“折线”调整为“平滑曲线”
+* 作业完成后，请在最后一次提交的提交日志中书写 ```Finish Homework 4``` 字样（注意大小写，空格）
+
+
+### 作业五
+
+#### 准备作业
+
+* 同作业四，目录为 ``` displaylist ```
+
+#### 作业内容
+
+* 分析 ```displaylist``` 中的 ``` renderer.ts ``` 文件，补全 TODO 注释相关的内容，实现一个完整的显示列表
+* 编写一个人物图像，必须包含以下显示列表结构
+```
+- Container ( human )
+|-- Bitmap ( head )
+|-- Bitmap ( trunk )
+|-- Bitmap ( left_leg )
+|-- Bitmap ( right_leg )
+|-- Bitmap ( left_arm )
+|-- Bitmap ( right_arm )
+```
+
+* 让这个人物整体进行平移和旋转，形成“滚动式前进”
+* 注意滚动的锚点应该在人的中心
+* 作业完成后，请在最后一次提交的提交日志中书写 ```Finish Homework 5``` 字样（注意大小写，空格）
+
