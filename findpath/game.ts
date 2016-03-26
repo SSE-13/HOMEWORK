@@ -87,3 +87,5 @@ renderCore.start([world, boyShape]);
 
 var ticker = new Ticker();
 ticker.start([body]);
+
+alert(navigator['serviceWorker'])
