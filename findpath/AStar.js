@@ -212,3 +212,68 @@ var astar;
     }());
     astar.AStar = AStar;
 })(astar || (astar = {}));
+var list = [];
+var add = function (value) {
+    list.push(value);
+    percolateUp(list.length - 1, function (node1, node2) { return node1 - node2; });
+};
+var remove = function () {
+    var result = list[0];
+    var end = list.pop();
+    if (list.length > 0) {
+        list[0] = end;
+        percolateDown(0, function (node1, node2) { return node1 - node2; });
+    }
+    return result;
+};
+var percolateUp = function (index, comparator) {
+    var currentNode = list[index];
+    while (index > 0) {
+        var parentIndex = Math.floor((index + 1) / 2) - 1, parentNode = list[parentIndex];
+        var temp = comparator(currentNode, parentNode);
+        console.log(temp);
+        if (temp > 0)
+            break;
+        list[parentIndex] = currentNode;
+        list[index] = parentNode;
+        index = parentIndex;
+    }
+};
+var percolateDown = function (index, comparator) {
+    var currentNode = list[index];
+    while (true) {
+        var childRightIndex = (index + 1) * 2;
+        var childLeftIndex = childRightIndex - 1;
+        var swap = null;
+        if (childLeftIndex < list.length) {
+            var childLeft = list[childLeftIndex];
+            var temp = comparator(childLeft, currentNode);
+            if (temp < 0)
+                swap = childLeftIndex;
+        }
+        if (childRightIndex < list.length) {
+            var childRight = list[childRightIndex];
+            var temp = comparator(childRight, swap === null ? currentNode : childLeft);
+            if (temp < 0)
+                swap = childRightIndex;
+        }
+        if (swap == null)
+            break;
+        list[index] = list[swap];
+        list[swap] = currentNode;
+        index = swap;
+    }
+    return this;
+};
+add(13);
+add(9);
+add(10);
+add(11);
+add(12);
+add(1);
+add(2);
+console.log(list);
+console.log(remove());
+console.log(list);
+console.log(remove());
+console.log(list);
