@@ -30,16 +30,16 @@ module render {
             this.globalMatrix = new math.Matrix();
         }
 
+        getLocalMatrix(): math.Matrix {
+            var localMatrix = new math.Matrix();
+            localMatrix.updateFromDisplayObject(this.x, this.y, this.scaleX, this.scaleY, this.rotation);
+            return localMatrix;
+        }
+
         draw(context: CanvasRenderingContext2D) {
 
             var parent = this.parent;
-            var angle = this.rotation / 180 * Math.PI;
-            var skewX = angle;
-            var skewY = angle;
-
-            var localMatrix = new math.Matrix();
-            localMatrix.updateFromDisplayObject(this.x, this.y, this.scaleX, this.scaleY, this.rotation);
-
+            var localMatrix = this.getLocalMatrix();
             if (!parent) {
                 this.globalMatrix = localMatrix;
             }
@@ -62,10 +62,10 @@ module render {
         }
 
         render(context: CanvasRenderingContext2D) {
-           
+
         }
     }
-    
+
     // Container
     //   draw
     //{  context.setTransform()  }

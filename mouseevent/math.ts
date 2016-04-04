@@ -3,6 +3,50 @@
 module math {
 
 
+    export class Point {
+        x: number;
+        y: number;
+        constructor(x: number, y: number) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    export function pointAppendMatrix(point: Point, m: Matrix): Point {
+        var x = m.a * point.x + m.c * point.y + m.tx;
+        var y = m.b * point.x + m.d * point.y + m.ty;
+        return new Point(x, y);
+
+    }
+
+
+    export function invertMatrix(m: Matrix): Matrix {
+
+
+        var a = m.a;
+        var b = m.b;
+        var c = m.c;
+        var d = m.d;
+        var tx = m.tx;
+        var ty = m.ty;
+
+        var determinant = a * d - b * c;
+        var result = new Matrix(1, 0, 0, 1, 0, 0);
+        if (determinant == 0) {
+            return result;
+        }
+
+        determinant = 1 / determinant;
+        var k = result.a = d * determinant;
+        b = result.b = -b * determinant;
+        c = result.c = -c * determinant;
+        d = result.d = a * determinant;
+        result.tx = -(k * tx + c * ty);
+        result.ty = -(b * tx + d * ty);
+        return result;
+
+    }
+
     export function matrixAppendMatrix(m1: Matrix, m2: Matrix): Matrix {
 
         var result = new Matrix();
