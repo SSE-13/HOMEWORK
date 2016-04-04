@@ -1,6 +1,7 @@
 
 var humanContainer = new render.DisplayObjectContainer();
 var head = new render.Bitmap();
+head.x = 100;
 head.source = "wander-icon.jpg";
 humanContainer.addChild(head);
 
@@ -12,11 +13,11 @@ class HumanBody extends Body {
     
     
     vx:number = 5;
+    
 
     onTicker(duringTime: number) {
-        this.x += duringTime * this.vx;
+        this.x = 100;//+= duringTime * this.vx;
         this.y = 100;
-        this.rotation = 30;
 
     }
 }
@@ -29,19 +30,17 @@ ticker.start([body]);
 var eventCore = new events.EventCore();
 eventCore.init();
 
-var humanHitTest = (localPoint:math.Point,displayObject:render.DisplayObject) =>{
-    console.log (localPoint);
+var headHitTest = (localPoint:math.Point,displayObject:render.DisplayObject) =>{
     alert (`点击位置为${localPoint.x},${localPoint.y}`);
     return true;
 }
 
-var humanOnClick = () => {
-    
+var headOnClick = () => {
     alert("clicked!!");
     //修改 HumanBody 的速度，使其反向移动
 }
 
-eventCore.register(humanContainer,humanHitTest,humanOnClick);
+eventCore.register(head,headHitTest,headOnClick);
 
 
 
