@@ -21,6 +21,7 @@ module math {
 
     /**
      * 使用伴随矩阵法求逆矩阵
+     * http://wenku.baidu.com/view/b0a9fed8ce2f0066f53322a9
      */
     export function invertMatrix(m: Matrix): Matrix {
 
