@@ -19,7 +19,9 @@ module math {
 
     }
 
-
+    /**
+     * 使用伴随矩阵法求逆矩阵
+     */
     export function invertMatrix(m: Matrix): Matrix {
 
 
@@ -33,7 +35,7 @@ module math {
         var determinant = a * d - b * c;
         var result = new Matrix(1, 0, 0, 1, 0, 0);
         if (determinant == 0) {
-            return result;
+            throw new Error("no invert");
         }
 
         determinant = 1 / determinant;
