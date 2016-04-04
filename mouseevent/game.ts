@@ -34,16 +34,16 @@ class HumanBody extends Body {
 
     onTicker(duringTime: number) {
 
-        // this.x =  100;
-        // this.y = 100;
-        // this.rotation = 30;
+        this.x =  100;
+        this.y = 100;
+        this.rotation = 30;
 
     }
 }
 
 var ticker = new Ticker();
 var body = new HumanBody(humanContainer);
-// ticker.start([body]);
+ticker.start([body]);
 
 
 
