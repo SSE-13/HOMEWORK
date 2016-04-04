@@ -1,6 +1,19 @@
 
 
-module render {
+module math {
+
+
+    export function matrixAppendMatrix(m1: Matrix, m2: Matrix): Matrix {
+
+        var result = new Matrix();
+        result.a = m1.a * m2.a + m1.b * m2.c;
+        result.b = m1.a * m2.b + m1.b * m2.d;
+        result.c = m2.a * m1.c + m2.c * m1.d;
+        result.d = m2.b * m1.c + m1.d * m2.d;
+        result.tx = m2.a * m1.tx + m2.c * m1.ty + m2.tx;
+        result.ty = m2.b * m1.tx + m2.d * m1.ty + m2.ty;
+        return result;
+    }
 
     var PI = Math.PI;
     var HalfPI = PI / 2;
@@ -76,7 +89,7 @@ module render {
      * @includeExample egret/geom/Matrix.ts
      */
     export class Matrix {
-  
+
         /**
          * @language en_US
          * Creates a new Matrix object with the specified parameters.
