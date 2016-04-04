@@ -28,10 +28,10 @@ module events {
             var stageClickedPoint = new math.Point(e.offsetX, e.offsetY);
             for (var i = 0; i < this.eventInfos.length; i++) {
                 var info = this.eventInfos[i];
-                var localMatrix = info.displayObject.globalMatrix;
+                var globalMatrix = info.displayObject.globalMatrix;
                 //思考，invert 是什么意思？对应线性代数的什么概念？为什么要做这一步？
-                var invertLocalMatrix = math.invertMatrix(localMatrix);
-                var newPoint = math.pointAppendMatrix(stageClickedPoint, invertLocalMatrix);
+                var invertGlobalMatrix = math.invertMatrix(globalMatrix);
+                var newPoint = math.pointAppendMatrix(stageClickedPoint, invertGlobalMatrix);
                 //如果检测返回true，则认为点中了
                 if (info.hitTest(newPoint, info.displayObject)) {
                     info.onClick();
