@@ -3,23 +3,63 @@ var app = express();
 var iconv = require('iconv-lite');
 var path = require('path');
 var os = require('os')
+var fs = require('fs');
+
+
+
+function getElectronFolder() {
+    var version = "0.37.5";
+    return `electron-${version}-${os.platform()}-${os.arch()}`;
+}
+
+function getElectronFileName() {
+    if (os.platform() == "win32") {
+        return "electron.exe";
+    }
+    else if (os.platform() == "darwin") {
+        return "Electron.app/Contents/MacOS/Electron";
+    }
+    else {
+        throw `unsupport electron platform : ${os.platform()}`;
+    }
+}
 
 var root = process.argv[2];
 if (!root) {
     throw 'no root path!';
 }
 
-app.get('/', typescriptCompiler);
+if (root == 'electron'){
+    openElectron();
+}
+else {
+    openExpressServer();
+}
 
-app.use(express.static(root));
+function openElectron(){
+        var electronPath = path.join(getElectronFolder(),getElectronFileName());
+    if (fs.existsSync(electronPath)){
+        console.log (1)
+    }
+    else{
+        console.log (2);
+    }
+}
+
+function openExpressServer() {
+    app.get('/', typescriptCompiler);
+
+    app.use(express.static(root));
+    var server = app.listen(3000, () => {
+        var host = server.address().address;
+        var port = server.address().port;
+
+        console.log('Example app listening at http://%s:%s', host, port);
+    });
+
+}
 
 
-var server = app.listen(3000, function() {
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('Example app listening at http://%s:%s', host, port);
-});
 
 function typescriptCompiler(req, res, next) {
     var spawn = require('child_process').spawn;
