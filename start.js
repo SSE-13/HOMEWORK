@@ -29,20 +29,21 @@ if (!root) {
     throw 'no root path!';
 }
 
-if (root == 'electron'){
+if (root == 'electron') {
     openElectron();
 }
 else {
     openExpressServer();
 }
 
-function openElectron(){
-        var electronPath = path.join(getElectronFolder(),getElectronFileName());
-    if (fs.existsSync(electronPath)){
-        console.log (1)
+function openElectron() {
+    var electronPath = path.join(getElectronFolder(), getElectronFileName());
+    //检测 electron 是否存在
+    if (fs.existsSync(electronPath)) {
+        console.log(1)
     }
-    else{
-        console.log (2);
+    else {
+        throw `electron not found !!\nplease download and install electron in ${electronPath} at first`;
     }
 }
 
