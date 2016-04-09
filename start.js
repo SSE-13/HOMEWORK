@@ -38,30 +38,35 @@ function openElectron() {
     var electronPath = path.join(getElectronFolder(), getElectronFileName());
     //检测 electron 是否存在
     if (fs.existsSync(electronPath)) {
-        var electron = createChildProcess(electronPath,function(data){
-            console.log (data);
-        },function(){
-            
+        var electron = createChildProcess(electronPath, ["map_editor"], function(data) {
+        }, function() {
+
         });
+
+
+        startTypescriptAutoCompiler();
 
 
     }
     else {
         throw `electron not found !!\nplease download and install electron in ${electronPath} at first`;
     }
+
+
+
 }
 
 
-function createChildProcess(cmd, onOutput, onExit) {
+function createChildProcess(cmd, param, onOutput, onExit) {
     var spawn = require('child_process').spawn;
-    var command = spawn(cmd, ['-p', root]);
+    var command = spawn(cmd, param);
     var errorMessage = "";
     // 捕获标准输出并将其打印到控制台
     command.stdout.on('data', function(data) {
         var buffer = new Buffer(data);
         var str = iconv.decode(buffer, 'gbk');;
         console.log(str)
-        onOutput(data);
+        onOutput(str);
     });
     // 捕获标准错误并将其打印到控制台
     command.stderr.on('data', function(data) {
@@ -69,7 +74,7 @@ function createChildProcess(cmd, onOutput, onExit) {
         var buffer = new Buffer(data);
         var str = iconv.decode(buffer, 'gbk');;
         console.log(str)
-        onOutput(data);
+        onOutput(str);
     });
     command.on('exit', onExit);
     return command;
@@ -88,6 +93,32 @@ function openExpressServer() {
     });
 
 }
+function startTypescriptAutoCompiler() {
+    
+    var tsc_path;
+    if (os.platform() == 'win32') {
+        tsc_path = path.join('node_modules', '.bin', 'tsc.cmd');
+    }
+    else {
+        tsc_path = path.join('node_modules', '.bin', 'tsc');
+    }
+
+    createChildProcess(tsc_path, ["-p", root], function(data) {
+        console.log(data);
+    }, function(code, signal) {
+        if (code == 0) {
+            var errorMessage = "";
+            createChildProcess(tsc_path, ["-p", root, "-w"], function(data) {
+            }, function(code, signal) {
+                console.log("TypeScript 编译器致命报错，请重启 Electron");
+                process.exit();
+            })
+        }
+    })
+
+
+
+}
 
 
 
@@ -100,7 +131,7 @@ function typescriptCompiler(req, res, next) {
     else {
         tsc_path = path.join('node_modules', '.bin', 'tsc');
     }
-    createChildProcess(tsc_path, function(data) {
+    createChildProcess(tsc_path, ["-p", root], function(data) {
         errorMessage += data
     }, function(code, signal) {
         if (code == 0) {
