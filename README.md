@@ -130,3 +130,15 @@ project-path
     * 点击小人腿部（两条腿）会使其立刻原地站立
     * 站立之后再点击头部继续滚动前进
 * 作业完成后，请在最后一次提交的提交日志中书写 ```Finish Homework 6``` 字样（注意大小写，空格）
+
+### 作业七
+
+#### 准备作业
+
+* 使用 GitHub 的 [DownloadZip](https://github.com/SSE-13/SSE_06080215/archive/master.zip) 功能下载项目。
+* 解压本项目，将 ``` map_editor ``` , ```.gitignore```,```start.js``` 解压到作业项目的根目录下。
+* 执行 ```node start.js map_editor```，会提示 Electron 不存在
+* 在 Electron[源代码网站](https://github.com/electron/electron) 下载符合你操作系统的 electron-v0.37.4 版本。
+* 下载并解压 electron 到正确目录上，再次执行 ``` node start.js map_editor ```，确认可以正确的打开 Electron
+* 在 electron
+
