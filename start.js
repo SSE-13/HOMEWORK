@@ -5,11 +5,9 @@ var path = require('path');
 var os = require('os')
 var fs = require('fs');
 
-
-
 function getElectronFolder() {
-    var version = "0.37.5";
-    return `electron-${version}-${os.platform()}-${os.arch()}`;
+    var version = "v0.37.4";
+    return `./electron-${version}-${os.platform()}-${os.arch()}`;
 }
 
 function getElectronFileName() {
@@ -29,7 +27,7 @@ if (!root) {
     throw 'no root path!';
 }
 
-if (root == 'electron') {
+if (root.indexOf('map_editor') != -1) {
     openElectron();
 }
 else {
@@ -40,11 +38,42 @@ function openElectron() {
     var electronPath = path.join(getElectronFolder(), getElectronFileName());
     //检测 electron 是否存在
     if (fs.existsSync(electronPath)) {
-        console.log(1)
+        var electron = createChildProcess(electronPath,function(data){
+            console.log (data);
+        },function(){
+            
+        });
+
+
     }
     else {
         throw `electron not found !!\nplease download and install electron in ${electronPath} at first`;
     }
+}
+
+
+function createChildProcess(cmd, onOutput, onExit) {
+    var spawn = require('child_process').spawn;
+    var command = spawn(cmd, ['-p', root]);
+    var errorMessage = "";
+    // 捕获标准输出并将其打印到控制台
+    command.stdout.on('data', function(data) {
+        var buffer = new Buffer(data);
+        var str = iconv.decode(buffer, 'gbk');;
+        console.log(str)
+        onOutput(data);
+    });
+    // 捕获标准错误并将其打印到控制台
+    command.stderr.on('data', function(data) {
+
+        var buffer = new Buffer(data);
+        var str = iconv.decode(buffer, 'gbk');;
+        console.log(str)
+        onOutput(data);
+    });
+    command.on('exit', onExit);
+    return command;
+
 }
 
 function openExpressServer() {
@@ -63,7 +92,7 @@ function openExpressServer() {
 
 
 function typescriptCompiler(req, res, next) {
-    var spawn = require('child_process').spawn;
+    var errorMessage = "";
     var tsc_path;
     if (os.platform() == 'win32') {
         tsc_path = path.join('node_modules', '.bin', 'tsc.cmd');
@@ -71,23 +100,9 @@ function typescriptCompiler(req, res, next) {
     else {
         tsc_path = path.join('node_modules', '.bin', 'tsc');
     }
-    var tsc = spawn(tsc_path, ['-p', root]);
-    var errorMessage = "";
-    // 捕获标准输出并将其打印到控制台
-    tsc.stdout.on('data', function(data) {
-        errorMessage += data;
-    });
-    // 捕获标准输出并将其打印到控制台
-    tsc.stderr.on('data', function(data) {
-
-        var buffer = new Buffer(data);
-        var str = iconv.decode(buffer, 'gbk');;
-        console.log(str)
-        errorMessage += str;
-    });
-
-    // 注册子进程关闭事件
-    tsc.on('exit', function(code, signal) {
+    createChildProcess(tsc_path, function(data) {
+        errorMessage += data
+    }, function(code, signal) {
         if (code == 0) {
             next();
         }
@@ -96,5 +111,5 @@ function typescriptCompiler(req, res, next) {
             message += "<p>" + errorMessage + "</p>";
             res.send(message);
         }
-    });
+    })
 }

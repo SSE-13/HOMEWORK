@@ -140,5 +140,5 @@ project-path
 * 执行 ```node start.js map_editor```，会提示 Electron 不存在
 * 在 Electron[源代码网站](https://github.com/electron/electron) 下载符合你操作系统的 electron-v0.37.4 版本。
 * 下载并解压 electron 到正确目录上，再次执行 ``` node start.js map_editor ```，确认可以正确的打开 Electron
-* 在 electron
+* 用 VSCode 打开 map_editor 文件夹，修改 ``` src ``` 中的TypeScript代码，会发现代码会进行自动编译，如果编译错误的话，命令行中会有报错信息。
 
