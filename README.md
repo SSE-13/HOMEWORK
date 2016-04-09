@@ -134,7 +134,7 @@ project-path
 ### 作业七
 
 #### 准备作业
-
+* 执行 ```node -v```命令，确认你的 Node.js 版本 >= v4.0.0
 * 使用 GitHub 的 [DownloadZip](https://github.com/SSE-13/SSE_06080215/archive/master.zip) 功能下载项目。
 * 解压本项目，将 ``` map_editor ``` , ```.gitignore```,```start.js``` 解压到作业项目的根目录下。
 * 执行 ```node start.js map_editor```，会提示 Electron 不存在
