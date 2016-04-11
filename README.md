@@ -154,7 +154,7 @@ project-path
 * 修改完代码后，在 Electron 中，按下 F5 （ Windows ） 或者 Command + R 键（Mac），会自动刷新 Electron，修改会生效
 * 在保证上述内容完全正常的前提下再做作业，如果出现了问题，请同学之间相互询问，或者周日答疑。
 * 在提交代码前确认已经修改了 .gitignore 文件，添加 node_modules 和 electron-v*，以保证 node_modules 文件夹和 electron 文件夹不会被提交（因为体积很大，提交很慢）
-
+* 如果已经误将 electron 文件夹提交了，请修改 .gitignore 文件并再次提交一次，就可以清除 electron
 
 #### 作业内容：
 
