@@ -130,12 +130,13 @@ module render {
         }
     }
 
-    class TextField extends DisplayObject {
+    export class TextField extends DisplayObject {
 
         render(context: CanvasRenderingContext2D) {
             context.font = "20px Arial";
             context.fillStyle = '#000000';
-            context.fillText('HelloWorld', 0, 20);
+            context.textAlign = "center"
+            context.fillText('HelloWorld', 0, 20,this.width);
         }
     }
 
