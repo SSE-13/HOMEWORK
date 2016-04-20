@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+</head>
+
+<body>
+    <h1>Hello World!</h1> We are using node
+    <script>
+        document.write(process.versions.node)
+    </script>, Chrome
+    <script>
+        document.write(process.versions.chrome)
+    </script>, and Electron
+    <script>
+        document.write(process.versions.electron)
+    </script>.
+
+    <canvas id="game" width="800" height="600">
+        <canvas>
+            <script src="math.js"></script>
+            <script src="data.js"></script>
+            <script src="renderer.js"></script>          
+            <script src="events.js"></script>
+            <script src="ui.js"></script>
+            <script src="editor.js"></script>
+            <script src="main.js"></script>
+</body>
+
+</html>
